@@ -1,4 +1,6 @@
-﻿namespace AlgorithmCSharp
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace AlgorithmCSharp
 {
     public static class TestCaseGenerator
     {
@@ -19,7 +21,7 @@
                 Console.Write(val + " ");
             }
 
-            Console.WriteLine(" the length of the list:" + list.Count);
+            if(list != null) Console.WriteLine(" the length of the list:" + list.Count);
 
             return list;
         }
@@ -39,7 +41,7 @@
             {
                 Console.Write(i + " ");
             }
-            Console.WriteLine(" the length of the array:" + list.Length);
+            if(list != null) Console.WriteLine(" the length of the array:" + list.Length);
 
             return list;
         }
@@ -219,17 +221,84 @@
         #region 209. Minimun Size Subarray Sum
         public static int MinSubArrayLen(int target, int[] nums)
         {
-            int len = 0;
+            int len = int.MaxValue;
             int sumOfSubArray = 0;
             int head = 0, tail = 0;
             while(tail < nums.Length)
             {
-                if (sumOfSubArray < 0)
+                sumOfSubArray += nums[tail];
+                while (sumOfSubArray >= target)
                 {
+                    len = (tail - head + 1) > len ? len : tail - head + 1;
+                    sumOfSubArray -= nums[head++];
+                }
+                tail++;
+            }
 
+            return len != int.MaxValue ? len : 0;
+        }
+        #endregion
+
+        #region 59. Spiral Matrix II
+        public static int[][] GenerateMatrix(int n)
+        {
+            int[][] matrix = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i] = new int[n];
+            }
+
+            int direction = 0;
+            int x = 0, y = 0;
+            for (int i = 0, val = 1; n - i > 0;)
+            {
+                switch (direction++ % 4)
+                {
+                    //向右，x不变，y递增
+                    case 0:
+                        for (int j = 0; j < n - i; j++)
+                        {
+                            matrix[x][y++] = val++;
+                        }
+                        y--;
+                        x++;
+                        i++;
+                        Console.WriteLine(x + " " + y);
+                        break;
+                    //向下，x递增，y不变
+                    case 1:
+                        for (int j = 0; j < n - i; j++)
+                        {
+                            matrix[x++][y] = val++;
+                        }
+                        x--;
+                        y--;
+                        Console.WriteLine(x + " " + y);
+                        break;
+                    //向左，x不变，y递减
+                    case 2:
+                        for (int j = 0; j < n - i; j++)
+                        {
+                            matrix[x][y--] = val++;
+                        }
+                        y++;
+                        x--;
+                        i++;
+                        Console.WriteLine(x + " " + y);
+                        break;
+                    //向上，x递减，y不变
+                    case 3:
+                        for (int j = 0; j < n - i; j++)
+                        {
+                            matrix[x--][y] = val++;
+                        }
+                        x++;
+                        y++;
+                        Console.WriteLine(x + " " + y);
+                        break;
                 }
             }
-            return len;
+            return matrix;
         }
         #endregion
     }
@@ -272,6 +341,32 @@
             #endregion
 
             #region 209. Minimun Size Subarray Sum
+            /*int[] nums = { 1, 4, 4 };
+            Console.WriteLine("the len is " + AlgorithmSolution.MinSubArrayLen(4, nums));*/
+            #endregion
+
+            #region 59. Spiral Matrix II
+            int[][] matrix = AlgorithmSolution.GenerateMatrix(3);
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    Console.Write(matrix[i][j] + " ");
+                }
+                Console.WriteLine();
+            }
+
+            int[][] mt = new int[3][];
+            for (int i = 0, val = 0 ; i < mt.Length; i++)
+            {
+                mt[i] = new int[3];
+                for (int j = 0; j < mt[i].Length; j++)
+                {
+                    mt[i][j] = val++;
+                    Console.Write("ij:" + i + " " + j + " "+ mt[i][j] + " ");
+                }
+                Console.WriteLine();
+            } 
             #endregion
         }
     }
