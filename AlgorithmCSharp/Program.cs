@@ -267,6 +267,25 @@ namespace AlgorithmCSharp
 
             return head.next;
         }
+
+        public static void IntersectListsGenerator(int maxLen, int maxVal, ListNode head1, ListNode head2)
+        {
+            Random rnd = new Random();
+            ListNode tail1 = head1;
+            ListNode tail2 = head2;
+            if (head1 == null || head2 == null) { return; }
+            while (tail1.next != null) tail1 = tail1.next;
+            while (tail2.next != null) tail2 = tail2.next;
+            int len = rnd.Next(maxLen);
+            Console.WriteLine("the length of the intersection is:" + len);
+            for (int i = 0; i < len; i++)
+            {
+                tail1.next = new ListNode(rnd.Next(maxVal));
+                tail2.next = tail1.next;
+                tail1 = tail1.next;
+                tail2 = tail2.next;
+            }
+        }
     }
     public static class AlgorithmSolution
     {
@@ -607,6 +626,35 @@ namespace AlgorithmCSharp
             return dummyHead.next;
         }
         #endregion
+
+        #region 160. Intersection of Two Linked Lists
+        public static ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            ListNode tailA = headA;
+            ListNode tailB = headB;
+            ListNode tmp1, tmp2;
+            while (tailA != null && tailB != null) 
+            {
+                tailA = tailA.next;
+                tailB = tailB.next;
+            }
+            tmp1 = tailA == null ? headB : headA;
+            tmp2 = tailA == null ? headA : headB;
+            while (tailA != null || tailB != null)
+            {
+                tmp1 = tmp1.next;
+                if (tailA == null && tailB != null) tailB = tailB.next; 
+                if (tailB == null && tailA != null) tailA = tailA.next;
+            }
+            while (tmp1 != tmp2 && tmp1 != null && tmp2 != null)
+            {
+                tmp1 = tmp1.next;
+                tmp2 = tmp2.next;
+            }
+            if (tmp2 != null) Console.WriteLine("the intersection point is:" + tmp2.val);
+            return tmp1;
+        }
+        #endregion
         #endregion
     }
     internal class Program
@@ -717,8 +765,17 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 19. Remove Nth Node From End Of The List
-            ListNode myListNode = TestCaseGenerator.ListNodesGenerator(20, 20);
-            ListNode.PrintList(AlgorithmSolution.RemoveNthFromEnd(myListNode, 5));
+            /*ListNode myListNode = TestCaseGenerator.ListNodesGenerator(20, 20);
+            ListNode.PrintList(AlgorithmSolution.RemoveNthFromEnd(myListNode, 5));*/
+            #endregion
+
+            #region 160. Intersection of Two Linked Lists
+            /*ListNode head1 = TestCaseGenerator.ListNodesGenerator(10, 20);
+            ListNode head2 = TestCaseGenerator.ListNodesGenerator(10, 20);
+            TestCaseGenerator.IntersectListsGenerator(10, 20, head1, head2);
+            ListNode.PrintList(head1);
+            ListNode.PrintList(head2);
+            Console.WriteLine("the result is:" + AlgorithmSolution.GetIntersectionNode(head1, head2));*/
             #endregion
             #endregion
         }
