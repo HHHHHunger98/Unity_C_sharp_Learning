@@ -242,7 +242,7 @@ namespace AlgorithmCSharp
             }
             
             ListNode tmp = list;
-            Console.WriteLine("The generated list is:");
+            Console.Write("The generated list is:");
             while (tmp != null)
             {
                 Console.Write(tmp.val + " ");
@@ -267,7 +267,6 @@ namespace AlgorithmCSharp
 
             return head.next;
         }
-
         public static void IntersectListsGenerator(int maxLen, int maxVal, ListNode head1, ListNode head2)
         {
             Random rnd = new Random();
@@ -284,6 +283,45 @@ namespace AlgorithmCSharp
                 tail2.next = tail1.next;
                 tail1 = tail1.next;
                 tail2 = tail2.next;
+            }
+        }
+        public static ListNode ListWithCycleGenerator(int maxLen, int maxCycleLen, int maxVal)
+        {
+            Random rnd = new Random();
+            ListNode head = ListNodesGenerator(maxLen, maxVal);
+            ListNode cycleHead = ListNodesGenerator(maxCycleLen, maxVal);
+            ListNode tail = head;
+            if (tail != null && cycleHead != null)
+            {
+                Console.WriteLine("A list with a cycle generated!");
+                while (tail.next != null) tail = tail.next; 
+                tail.next = cycleHead;
+                while (tail.next != null) tail = tail.next;
+                tail.next = cycleHead;
+                Console.WriteLine("the cycle starts at:" + cycleHead.val);
+                return head;
+            }
+            else if (tail == null && cycleHead != null)
+            {
+                Console.WriteLine("A loop is generated!");
+                tail = cycleHead;
+                while (tail.next != null)
+                {
+                    tail = tail.next;
+                }
+                tail.next = cycleHead;
+                Console.WriteLine("the cycle starts at:" + cycleHead.val);
+                return cycleHead;
+            }
+            else if (tail != null && cycleHead == null)
+            {
+                Console.WriteLine("No cycle generated!");
+                return head;
+            }
+            else
+            {
+                Console.WriteLine("Both list and cycle are null!");
+                return head;
             }
         }
     }
@@ -655,6 +693,30 @@ namespace AlgorithmCSharp
             return tmp1;
         }
         #endregion
+
+        #region 142. Linked List Cycle II
+        public static ListNode DetectCycle(ListNode head)
+        {
+            ListNode fast = head, slow = head;
+            while (fast != null && slow != null && fast.next != null && slow.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+                if (fast == slow) 
+                {
+                    slow = head;
+                    while (fast != null && slow != null && fast.next != null && slow.next != null)
+                    {
+                        if (fast == slow) return slow;
+                        slow = slow.next;
+                        fast = fast.next;
+                    }
+                }
+            }
+
+            return null;
+        }
+        #endregion
         #endregion
     }
     internal class Program
@@ -776,6 +838,12 @@ namespace AlgorithmCSharp
             ListNode.PrintList(head1);
             ListNode.PrintList(head2);
             Console.WriteLine("the result is:" + AlgorithmSolution.GetIntersectionNode(head1, head2));*/
+            #endregion
+
+            #region 142. Linked List Cycle II
+            /*ListNode list = TestCaseGenerator.ListWithCycleGenerator(10, 10, 20);
+            ListNode entrance = AlgorithmSolution.DetectCycle(list);
+            Console.WriteLine(entrance == null ? entrance : entrance.val);*/
             #endregion
             #endregion
         }
