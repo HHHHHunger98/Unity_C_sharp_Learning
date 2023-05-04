@@ -718,6 +718,30 @@ namespace AlgorithmCSharp
         }
         #endregion
         #endregion
+
+        #region Hash Table Problems
+        #region 242. Vaild Anagram
+        public static bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length) return false;
+
+            int[] letters = new int[26];
+            foreach (char i in s)
+            {
+                letters[i - 97]++;
+            }
+            foreach (char j in t)
+            {
+                letters[j - 97]--;
+            }
+            for (int i = 0; i < letters.Length; i++)
+            {
+                if (letters[i] != 0) return false;
+            }
+            return true;
+        }
+        #endregion
+        #endregion
     }
     internal class Program
     {
@@ -844,6 +868,12 @@ namespace AlgorithmCSharp
             /*ListNode list = TestCaseGenerator.ListWithCycleGenerator(10, 10, 20);
             ListNode entrance = AlgorithmSolution.DetectCycle(list);
             Console.WriteLine(entrance == null ? entrance : entrance.val);*/
+            #endregion
+            #endregion
+
+            #region Hash Table Problems
+            #region 242. Vaild Anagram
+            //Console.WriteLine(AlgorithmSolution.IsAnagram("sdzzzzs", "dsszzz"));
             #endregion
             #endregion
         }
