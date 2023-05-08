@@ -904,31 +904,33 @@ namespace AlgorithmCSharp
         {
             IList<IList<int>> quadruplets = new List<IList<int>>();
             Array.Sort(nums);
-            int left, mid, right;
 
-            for (int i = 0; i < nums.Length; i++)
+            int i, left, mid, right;
+
+            for (i = 0; i < nums.Length; i++)
             {
                 if (i > 0 && nums[i] == nums[i - 1]) continue;
-                Console.WriteLine($" i is : {0}", i);
-                for (left = i + 1, mid = left + 1, right = nums.Length - 1; left < nums.Length; left++)
-                {    
+                
+                for (left = i + 1; left < nums.Length; left++)
+                {
                     if (left > i + 1 && nums[left] == nums[left - 1]) continue;
+
                     mid = left + 1;
                     right = nums.Length - 1;
-                    Console.WriteLine($" i is : {0}, left is {1}, mid is {2}, right is {3}", i, left, mid, right);
 
-                    while (left < mid && mid < right)
+                    while (mid < right)
                     {
-                        int sum = nums[i] + nums[left] + nums[mid] + nums[right];
+                        long sum = (long)nums[i] + nums[left] + nums[mid] + nums[right];
+                        Console.WriteLine(sum);
                         if ( sum > target)
-                        {
-                            mid++;
-                        }
-                        else if (sum < target)
                         {
                             right--;
                         }
-                        else
+                        else if (sum < target)
+                        {
+                            mid++;
+                        }
+                        else if (sum == target)
                         {
                             IList<int> quadruplet = new List<int>()
                             {
@@ -939,14 +941,16 @@ namespace AlgorithmCSharp
                             };
                             quadruplets.Add(quadruplet);
 
-                            //while (mid < right && nums[mid] == nums[mid + 1]) mid++;
-                            //while (mid < right && nums[right] == nums[right - 1]) right--;
+                            while (mid < right && nums[mid] == nums[mid + 1]) mid++;
+                            while (mid < right && nums[right] == nums[right - 1]) right--;
                             mid++;
                             right--;
                         }
                     }
                 }
             }
+
+            Console.WriteLine(quadruplets.Count);
             foreach (var item in quadruplets)
             {
                 foreach (var s in item)
@@ -1135,9 +1139,11 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 18. 4Sum
-            int[] nums = { 1, 0, -1, 0, -2, 2 };
-            AlgorithmSolution.FourSum(nums, 0);
+            /*int[] nums = { 1000000000, 1000000000, 1000000000, 1000000000 };
+            //int[] nums = { 2, 2, 2, 2, 2 };
+            AlgorithmSolution.FourSum(nums, -294967296);*/
             #endregion
+
             #region 454. 4Sum II
 
             #endregion
