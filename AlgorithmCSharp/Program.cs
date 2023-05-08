@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using static AlgorithmCSharp.AlgorithmSolution;
 
@@ -825,6 +826,145 @@ namespace AlgorithmCSharp
             return true;
         }
         #endregion
+
+        #region 1.Two Sum
+        public static int[] TwoSum(int[] nums, int target)
+        {
+            Dictionary<int, int> keyValuePairs = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (keyValuePairs.ContainsKey(target - nums[i]))
+                {
+                    int[] result = { keyValuePairs[(target - nums[i])], i };
+                    return result;
+                }
+                if (!keyValuePairs.ContainsKey(nums[i])) keyValuePairs.Add(nums[i], i);
+            }
+            return null;
+        }
+        #endregion
+
+        #region 15. 3Sum
+        public static IList<IList<int>> ThreeSum(int[] nums)
+        {
+            IList<IList<int>> triplets = new List<IList<int>>();
+
+            Array.Sort(nums);
+            int left, right;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i > 0 && nums[i] == nums[i - 1]) { continue; }
+
+                left = i + 1;
+                right = nums.Length - 1;
+                while (left < right)
+                {                  
+                    int sum = nums[i] + nums[left] + nums[right];
+                    if (sum < 0)
+                    {
+                        left++;
+                        continue;
+                    }
+                    else if (sum > 0)
+                    {
+                        right--;
+                        continue;
+                    }
+                    else if (sum == 0)
+                    {
+                        IList<int> triplet = new List<int>
+                        {
+                            nums[i],
+                            nums[left],
+                            nums[right]
+                        };
+                        triplets.Add(triplet);
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        left++;
+                        right--;
+                    }
+                }
+            }
+            Console.WriteLine(triplets.Count);
+            foreach (var item in triplets)
+            {
+                foreach (var s in item)
+                {
+                    Console.Write(s + " ");
+                }
+                Console.WriteLine();
+            }
+            return triplets;
+        }
+        #endregion
+
+        #region 18. 4Sum
+        public static IList<IList<int>> FourSum(int[] nums, int target)
+        {
+            IList<IList<int>> quadruplets = new List<IList<int>>();
+            Array.Sort(nums);
+            int left, mid, right;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+                Console.WriteLine($" i is : {0}", i);
+                for (left = i + 1, mid = left + 1, right = nums.Length - 1; left < nums.Length; left++)
+                {    
+                    if (left > i + 1 && nums[left] == nums[left - 1]) continue;
+                    mid = left + 1;
+                    right = nums.Length - 1;
+                    Console.WriteLine($" i is : {0}, left is {1}, mid is {2}, right is {3}", i, left, mid, right);
+
+                    while (left < mid && mid < right)
+                    {
+                        int sum = nums[i] + nums[left] + nums[mid] + nums[right];
+                        if ( sum > target)
+                        {
+                            mid++;
+                        }
+                        else if (sum < target)
+                        {
+                            right--;
+                        }
+                        else
+                        {
+                            IList<int> quadruplet = new List<int>()
+                            {
+                                nums[i],
+                                nums[left],
+                                nums[mid],
+                                nums[right],
+                            };
+                            quadruplets.Add(quadruplet);
+
+                            //while (mid < right && nums[mid] == nums[mid + 1]) mid++;
+                            //while (mid < right && nums[right] == nums[right - 1]) right--;
+                            mid++;
+                            right--;
+                        }
+                    }
+                }
+            }
+            foreach (var item in quadruplets)
+            {
+                foreach (var s in item)
+                {
+                    Console.Write(s + " ");
+                }
+                Console.WriteLine();
+            }
+            return quadruplets;
+        }
+        #endregion
+
+        #region 454. 4Sum II
+        /*public static int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4)
+        {
+
+        }*/
+        #endregion
         #endregion
     }
     internal class Program
@@ -978,7 +1118,28 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 202. Happy Number
-            Console.WriteLine(AlgorithmSolution.IsHappy(2));
+            //Console.WriteLine(AlgorithmSolution.IsHappy(2));
+            #endregion
+
+            #region 1. Two Sum
+            /*int[] nums = { 2, 7, 11, 15 };
+            foreach (int i in AlgorithmSolution.TwoSum(nums, 9))
+            {
+                Console.WriteLine(i);
+            }*/
+            #endregion
+
+            #region 15. 3Sum
+            /*int[] nums = { -1, 0, 1, 2, -1, -4 };
+            AlgorithmSolution.ThreeSum(nums);*/
+            #endregion
+
+            #region 18. 4Sum
+            int[] nums = { 1, 0, -1, 0, -2, 2 };
+            AlgorithmSolution.FourSum(nums, 0);
+            #endregion
+            #region 454. 4Sum II
+
             #endregion
             #endregion
         }
