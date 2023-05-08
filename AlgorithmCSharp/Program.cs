@@ -741,6 +741,90 @@ namespace AlgorithmCSharp
             return true;
         }
         #endregion
+
+        #region 1002. Find Common Characters
+        public static IList<string> CommonChars(string[] words)
+        {
+            IList<string> list = new List<string>();
+            int[] letters = new int[26];
+            foreach (char c in words[0])
+            {
+                letters[c - 'a']++;
+            }
+            for (int i = 1; i < words.Length; i++)
+            {
+                int[] lettersInOtherWord = new int[26];
+                foreach (char c in words[i])
+                {
+                    lettersInOtherWord[c - 'a']++;
+                }
+                for (int j = 0; j < letters.Length; j++)
+                {
+                    letters[j] = Math.Min(letters[j], lettersInOtherWord[j]);
+                }
+            }
+            for (int i = 0; i < letters.Length; i++)
+            {
+                if (letters[i] > 0)
+                {
+                    for (int j = 0; j < letters[i]; j++)
+                    {
+                        list.Add(((char)('a' + i)).ToString());
+                    }
+                }
+            }
+            return list;
+        }
+        #endregion
+
+        #region 349. Intersection Of Two Arrays
+        public static int[] Intersection(int[] nums1, int[] nums2)
+        {
+            HashSet<int> set = new HashSet<int>();
+            HashSet<int> result = new HashSet<int>();
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                set.Add(nums1[i]);
+            }
+            for (int i = 0; i < nums2.Length; i++)
+            {
+                if (set.Contains(nums2[i]))
+                {
+                    result.Add(nums2[i]);
+                }
+            }
+
+            int[] ints = new int[result.Count];
+            int index = 0;
+            foreach (int i in result) ints[index++] = i;
+            return ints;
+        }
+        #endregion
+
+        #region 202. Happy Number
+        public static bool IsHappy(int n)
+        {
+            if (n <= 0) return false;
+
+            HashSet<int> happySet = new HashSet<int>();
+            int sum = 0, digit;
+            while (n != 1)
+            {
+                happySet.Add(n);
+                while (n > 0)
+                {
+                    digit = n % 10;
+                    sum += digit * digit;
+                    n = n / 10;
+                }
+                n = sum;
+                sum = 0;
+                if (happySet.Contains(n)) return false;
+            }
+
+            return true;
+        }
+        #endregion
         #endregion
     }
     internal class Program
@@ -874,6 +958,27 @@ namespace AlgorithmCSharp
             #region Hash Table Problems
             #region 242. Vaild Anagram
             //Console.WriteLine(AlgorithmSolution.IsAnagram("sdzzzzs", "dsszzz"));
+            #endregion
+
+            #region 1002. Find Common Characters
+            /*string[] words = { "cool", "lock", "cook" };
+            foreach (string s in CommonChars(words))
+            {
+                Console.WriteLine(s);
+            }*/
+            #endregion
+
+            #region 349. Intersection Of Two Arrays
+            /*int[] nums1 = { 4, 9, 5 };
+            int[] nums2 = { 9, 4, 9, 8, 4 };
+            foreach (int i in AlgorithmSolution.Intersection(nums1, nums2))
+            {
+                Console.WriteLine(i);
+            }*/
+            #endregion
+
+            #region 202. Happy Number
+            Console.WriteLine(AlgorithmSolution.IsHappy(2));
             #endregion
             #endregion
         }
