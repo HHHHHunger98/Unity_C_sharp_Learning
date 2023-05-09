@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using static AlgorithmCSharp.AlgorithmSolution;
@@ -964,10 +965,49 @@ namespace AlgorithmCSharp
         #endregion
 
         #region 454. 4Sum II
-        /*public static int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4)
+        public static int FourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4)
         {
+            int result = 0;
+            Dictionary<int, int> sumOfTwoArray = new Dictionary<int, int>();
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                for (int j = 0; j < nums2.Length; j++)
+                {
+                    if (sumOfTwoArray.ContainsKey(nums1[i] + nums2[j])) sumOfTwoArray[nums1[i] + nums2[j]]++;
+                    else sumOfTwoArray.Add(nums1[i] + nums2[j], 1);
+                }
+            }
 
-        }*/
+            for (int i = 0; i < nums3.Length; i++)
+            {
+                for (int j = 0; j < nums4.Length; j++)
+                {
+                    if (sumOfTwoArray.ContainsKey(-(nums3[i] + nums4[j]))) result += sumOfTwoArray[-(nums3[i] + nums4[j])];
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 383. Ransom Note
+        public static bool CanConstruct(string ransomNote, string magazine)
+        {
+            if (magazine.Length < ransomNote.Length) return false;
+
+            Dictionary<char,int> lettersCounts = new Dictionary<char,int>();
+            foreach (char c in ransomNote) 
+            {
+                if (lettersCounts.ContainsKey(c)) lettersCounts[c]++;
+                else lettersCounts.Add(c, 1);
+            }
+
+            foreach (char c in magazine) if (lettersCounts.ContainsKey(c)) lettersCounts[c]--;
+
+            foreach (var item in lettersCounts) if (item.Value > 0) return false;
+
+            return true;
+        }
         #endregion
         #endregion
     }
@@ -1145,8 +1185,18 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 454. 4Sum II
+            /*int[] nums1 = { 1, 2 };
+            int[] nums2 = { -2, -1}; int[] nums3 = { -1, 2 };
+            int[] nums4 = { 0, 2 };
 
+            Console.WriteLine(AlgorithmSolution.FourSumCount(nums1,nums2,nums3,nums4));*/
             #endregion
+
+            #region 383. Ransom Note
+            /*string a = "aab", b = "baa";
+            Console.WriteLine(AlgorithmSolution.CanConstruct(a, b));*/
+            #endregion
+
             #endregion
         }
     }
