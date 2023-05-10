@@ -1009,6 +1009,72 @@ namespace AlgorithmCSharp
             return true;
         }
         #endregion
+
+        #region 344. Reverse String
+        public static void ReverseString(char[] s)
+        {
+            int head = 0, tail = s.Length - 1;
+            while (head < tail)
+            {
+                char c = s[head];
+                s[head] = s[tail];
+                s[tail] = c;
+                head++;
+                tail--;
+            }
+        }
+        #endregion
+
+        #region 541. Reverse String II
+        public static string ReverseStr(string s, int k)
+        {
+            int numsLeft = s.Length;
+            string result = String.Empty;
+            char[] chars = s.ToCharArray();
+            while ( numsLeft > 0 )
+            {
+                if (numsLeft >= 2 * k)
+                {
+                    for (int i = k; i > 0; i--)
+                    {
+                        //reverse the first k elements
+                        result += chars[chars.Length - numsLeft + k - 1];
+                    }
+                    for (int i = 0; i < k; i++)
+                    {
+                        //keep the last k elements the same
+                        result += chars[chars.Length - numsLeft + k + i];
+                    }
+                    numsLeft -= 2 * k;
+                }
+                else if (numsLeft < 2 * k && numsLeft >= k)
+                {
+                    for (int i = k; i > 0; i--)
+                    {
+                        //reverse the first k elements
+                        result += chars[chars.Length - numsLeft + k - 1];
+                    }
+                    for (int i = 0; i < numsLeft - k; i++)
+                    {
+                        //keep the last k elements the same
+                        result += chars[chars.Length - numsLeft + k + i];
+                    }
+                    numsLeft = 0;
+                }
+                else if (numsLeft < k)
+                {
+                    for (int i = numsLeft; i > 0; i--)
+                    {
+                        //reverse the first k elements
+                        result += chars[i - 1];
+                    }
+                    numsLeft = 0;
+                }
+            }
+
+            return result;
+        }
+        #endregion
         #endregion
     }
     internal class Program
@@ -1197,6 +1263,13 @@ namespace AlgorithmCSharp
             Console.WriteLine(AlgorithmSolution.CanConstruct(a, b));*/
             #endregion
 
+            #region 344. Reverse String
+            /*char[] s = { 'a', 'b', 'c' };
+            AlgorithmSolution.ReverseString(s);*/
+            #endregion
+
+            #region 541. Reverse String II
+            #endregion
             #endregion
         }
     }
