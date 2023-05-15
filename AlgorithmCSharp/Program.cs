@@ -1,7 +1,10 @@
-﻿using System.Drawing;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using static AlgorithmCSharp.AlgorithmSolution;
 
 namespace AlgorithmCSharp
@@ -187,6 +190,33 @@ namespace AlgorithmCSharp
             Console.WriteLine();
         }
     }
+
+    [MemoryDiagnoser]
+    public class MemoryBenchmarkerDemo
+    {
+        int NumberOfItems = 100000;
+        [Benchmark]
+        public string ConcatStringsUsingStringBuilder()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < NumberOfItems; i++)
+            {
+                sb.Append("Hello World!" + i);
+            }
+            return sb.ToString();
+        }
+        [Benchmark]
+        public string ConcatStringsUsingGenericList()
+        {
+            var list = new List<string>(NumberOfItems);
+            for (int i = 0; i < NumberOfItems; i++)
+            {
+                list.Add("Hello World!" + i);
+            }
+            return list.ToString();
+        }
+    }
+
     public static class TestCaseGenerator
     {
         public static List<int> IntListGenerator(int maxLen, int maxVal)
@@ -1009,6 +1039,7 @@ namespace AlgorithmCSharp
             return true;
         }
         #endregion
+        #endregion
 
         #region String Problems
         #region 344. Reverse String
@@ -1077,8 +1108,93 @@ namespace AlgorithmCSharp
         }
         #endregion
 
+        #region 剑指offer 05. 替换空格
+        /* 题目：请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+         * 示例 1： 输入：s = "We are happy."
+         * 输出："We%20are%20happy."
+         * 
+         * 给出了两个版本的解法，第一个是最直观暴力解法，遍历字符串，遇到空格就在结果中插入“%20”
+         * Time Complexity: O(n)
+         * Space Complexity: O(n)
+         * 
+         * 第二种方法是利用双指针法，以数组的形式操作字符串，扩充，双指针法插入“%20” 
+         * 因为在c sharp 中并不能直接通过index对string类型进行操作，这里是学习双指针法的解题思路
+         * Time Complexity: O(n)
+         * Space Complexity: O(n)，如果可以直接操作字符串，空间复杂度为O(1)
+         */
+
+        // 方法一，暴力遍历
+        [Benchmark]
+        public static string ReplaceSpace(string str, string replacement)
+        {
+            string result = string.Empty;
+            foreach (char c in str)
+            {
+                if (c == ' ')
+                {
+                    result += replacement;
+                }
+                else
+                {
+                    result += c;
+                }
+            }
+            Console.WriteLine(result.Length);
+            return result;
+        }
+
+        //方法二，双指针法修改
+        [Benchmark]
+        public static string ReplaceSpaceII(string str)
+        {
+            char[] chars = str.ToCharArray();
+            int spaceCount = 0;
+            foreach (char c in str)
+            {
+                if (c == ' ') spaceCount++;
+            }
+            Console.WriteLine(str.Length + 2*spaceCount);
+            Array.Resize(ref chars, chars.Length - spaceCount + 3 * spaceCount);
+            /*for (int i = 0;i < chars.Length; i++)
+            {
+                Console.WriteLine("{0} : {1}", i,chars[i]);
+            }*/
+            int left = str.Length - 1, right = chars.Length - 1;
+            while (left >=0 && left != right)
+            {
+                if (chars[left] != ' ')
+                {
+                    chars[right--] = chars[left];
+                }
+                else if (chars[left] == ' ')
+                {
+                    chars[right--] = '0';
+                    chars[right--] = '2';
+                    chars[right--] = '%';
+                }
+                left--;
+            }
+            //Console.WriteLine(chars.Length);
+            return new string(chars);
+
+            /*StringBuilder result = new StringBuilder();
+            foreach (char c in str)
+            {
+                if (c == ' ')
+                {
+                    result.Append(replacement);
+                }
+                else
+                {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();*/
+        }
         #endregion
         #endregion
+
     }
     internal class Program
     {
@@ -1266,6 +1382,9 @@ namespace AlgorithmCSharp
             Console.WriteLine(AlgorithmSolution.CanConstruct(a, b));*/
             #endregion
 
+            #endregion
+
+            #region String Problems
             #region 344. Reverse String
             /*char[] s = { 'a', 'b', 'c' };
             AlgorithmSolution.ReverseString(s);*/
@@ -1275,7 +1394,18 @@ namespace AlgorithmCSharp
 
             #endregion
 
+            #region 剑指offer 05. 替换空格
+            /* 题目：请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+             * 示例 1： 输入：s = "We are happy."
+             * 输出："We%20are%20happy."
+             * 
+             */
 
+            /*Console.WriteLine(AlgorithmSolution.ReplaceSpace("We are happy. And you know nothing!", "%20"));
+            Console.WriteLine(AlgorithmSolution.ReplaceSpaceII("We are happy. And you know nothing!"));*/
+            #endregion
+
+            //var summary = BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
             #endregion
         }
     }
