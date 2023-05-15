@@ -1010,6 +1010,7 @@ namespace AlgorithmCSharp
         }
         #endregion
 
+        #region String Problems
         #region 344. Reverse String
         public static void ReverseString(char[] s)
         {
@@ -1031,7 +1032,7 @@ namespace AlgorithmCSharp
             int numsLeft = s.Length;
             string result = String.Empty;
             char[] chars = s.ToCharArray();
-            while ( numsLeft > 0 )
+            while (numsLeft > 0)
             {
                 if (numsLeft >= 2 * k)
                 {
@@ -1074,6 +1075,8 @@ namespace AlgorithmCSharp
 
             return result;
         }
+        #endregion
+
         #endregion
         #endregion
     }
@@ -1269,7 +1272,10 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 541. Reverse String II
+
             #endregion
+
+
             #endregion
         }
     }
