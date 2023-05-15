@@ -1193,6 +1193,23 @@ namespace AlgorithmCSharp
             return result.ToString();*/
         }
         #endregion
+
+        #region 151. Reverse Words in a String
+        public static string ReverseWords(string s)
+        {
+            int wordsCount = 0;
+            for(int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != ' ')
+                {
+                    wordsCount++;
+                    while (s[i] != ' ') { i++; }
+                    i--;
+                }
+            }
+            Console.WriteLine();
+        }
+        #endregion
         #endregion
 
     }
@@ -1405,6 +1422,8 @@ namespace AlgorithmCSharp
             Console.WriteLine(AlgorithmSolution.ReplaceSpaceII("We are happy. And you know nothing!"));*/
             #endregion
 
+            #region 151. Reverse Words in a String
+            #endregion
             //var summary = BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
             #endregion
         }
