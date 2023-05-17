@@ -1227,6 +1227,54 @@ namespace AlgorithmCSharp
             return result.ToString();
         }
         #endregion
+
+        #region 剑指offer 58-II. 左旋转字符串
+        public static string LeftRotateString(string s, int k)
+        {
+            char[] chars = s.ToCharArray();
+            for (int i = 0, j = k - 1; i < j; i++, j--)
+            {
+                char tmp = chars[i];
+                chars[i] = chars[j];
+                chars[j] = tmp;
+            }
+            for (int i = k, j = chars.Length - 1; i < j; i++, j--)
+            {
+                char tmp = chars[i];
+                chars[i] = chars[j];
+                chars[j] = tmp;
+            }
+            for (int i = 0, j = chars.Length - 1; i < j; i++, j--)
+            {
+                char tmp = chars[i];
+                chars[i] = chars[j];
+                chars[j] = tmp;
+            }
+
+            return new string(chars);
+        }
+        #endregion
+
+        #region 28. Find The Index Of The First Occurrence In A String
+        public static int StrStr(string haystack, string needle)
+        {
+            for (int i = 0; i <= haystack.Length - needle.Length; i++)
+            {
+                for (int j = 0; j < needle.Length; j++)
+                {
+                    if (haystack[i + j] != needle[j])
+                    {
+                        break;
+                    }
+                    if (j == needle.Length - 1 && haystack[i + j] == needle[j])
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+        #endregion
         #endregion
 
     }
@@ -1440,9 +1488,20 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 151. Reverse Words in a String
-            string str = " str hs s     af   g   ";
-            AlgorithmSolution.ReverseWords(str);
+            /*string str = " str hs s     af   g   ";
+            AlgorithmSolution.ReverseWords(str);*/
             #endregion
+
+            #region 剑指offer 58-II. 左旋转字符串
+            //Console.WriteLine(AlgorithmSolution.LeftRotateString("abcdefg", 2));
+            #endregion
+
+            #region 28. Find The Index Of The First Occurrence In A String
+            string haystack = "mississippi", needle = "issipi";
+            Console.WriteLine(AlgorithmSolution.StrStr(haystack, needle));
+            #endregion
+
+
             //var summary = BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
             #endregion
         }
