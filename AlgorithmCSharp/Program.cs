@@ -1197,17 +1197,34 @@ namespace AlgorithmCSharp
         #region 151. Reverse Words in a String
         public static string ReverseWords(string s)
         {
-            int wordsCount = 0;
-            for(int i = 0; i < s.Length; i++)
+            StringBuilder result = new StringBuilder();
+            int start = s.Length - 1, end = s.Length - 1;
+
+            while (start >= 0)
             {
-                if (s[i] != ' ')
+                while (end >= 0 && s[end] == ' ')
                 {
-                    wordsCount++;
-                    while (s[i] != ' ') { i++; }
-                    i--;
+                    end--;
                 }
+                start = end;
+                while (start >= 0 && s[start] != ' ')
+                {
+                    start--;
+                }
+
+                for (int i = start+1; i <= end; i++)
+                {
+                    result.Append(s[i]);
+                }
+                if (end - start > 0)
+                {
+                    result.Append(' ');
+                }
+                end = start;
             }
-            Console.WriteLine();
+            if (result[result.Length-1] == ' ') result.Length--;
+            Console.WriteLine(result.ToString() + "!");
+            return result.ToString();
         }
         #endregion
         #endregion
@@ -1423,6 +1440,8 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 151. Reverse Words in a String
+            string str = " str hs s     af   g   ";
+            AlgorithmSolution.ReverseWords(str);
             #endregion
             //var summary = BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
             #endregion
