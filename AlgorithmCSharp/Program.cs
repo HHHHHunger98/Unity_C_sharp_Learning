@@ -357,6 +357,57 @@ namespace AlgorithmCSharp
             }
         }
     }
+    
+    public class MyQueue
+    {
+        Stack<int> inputStack;
+        Stack<int> outputStack;
+        public MyQueue() 
+        {
+            inputStack = new Stack<int>();
+            outputStack = new Stack<int>();
+        }
+
+        public void Push(int item)
+        {
+            inputStack.Push(item);
+        }
+        
+        public int Pop()
+        {
+            if (outputStack.Count == 0)
+            {
+                while (inputStack.Count > 0)
+                {
+                    outputStack.Push(inputStack.Pop());
+                }
+            }
+            
+            return outputStack.Pop();
+        }
+
+        public int Peek()
+        {
+            if (outputStack.Count > 0)
+            {
+                return outputStack.Peek();
+            }
+            else if (inputStack.Count > 0 && outputStack.Count == 0)
+            {
+                while (inputStack.Count > 0)
+                {
+                    outputStack.Push(inputStack.Pop());
+                }
+            }
+
+            return outputStack.Peek();
+        }
+
+        public bool Empty()
+        {
+            return inputStack.Count == 0 && outputStack.Count == 0;
+        }
+    }
     public static class AlgorithmSolution
     {
         #region Array Problems
@@ -1277,6 +1328,12 @@ namespace AlgorithmCSharp
         #endregion
         #endregion
 
+        #region Stack & Queue Problems
+        #region 232. Implement queue using stacks
+        // See Class MyQueue
+        #endregion
+
+        #endregion
     }
     internal class Program
     {
@@ -1497,12 +1554,18 @@ namespace AlgorithmCSharp
             #endregion
 
             #region 28. Find The Index Of The First Occurrence In A String
-            string haystack = "mississippi", needle = "issipi";
-            Console.WriteLine(AlgorithmSolution.StrStr(haystack, needle));
+            /*string haystack = "mississippi", needle = "issipi";
+            Console.WriteLine(AlgorithmSolution.StrStr(haystack, needle));*/
             #endregion
 
 
             //var summary = BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
+            #endregion
+
+            #region Stack & Queue Problems
+            #region 232. Implement queue using stacks
+            #endregion
+
             #endregion
         }
     }
