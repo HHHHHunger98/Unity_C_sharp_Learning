@@ -358,6 +358,7 @@ namespace AlgorithmCSharp
         }
     }
     
+    // Class MyQueue is a queue implemented using stacks
     public class MyQueue
     {
         Stack<int> inputStack;
@@ -406,6 +407,63 @@ namespace AlgorithmCSharp
         public bool Empty()
         {
             return inputStack.Count == 0 && outputStack.Count == 0;
+        }
+    }
+
+    // Class MyStack is a stack implemented using queues
+    public class MyStack
+    {
+        public Queue<int> outputQueue;
+        public Queue<int> backupQueue;
+
+        public MyStack()
+        {
+            outputQueue = new Queue<int>();
+            backupQueue = new Queue<int>();
+        }
+
+        public void Push(int x)
+        {
+            outputQueue.Enqueue(x);
+        }
+
+        public int Pop()
+        {
+            if (backupQueue.Count == 0)
+            {
+                while (outputQueue.Count > 1)
+                {
+                    backupQueue.Enqueue(outputQueue.Dequeue());
+                }
+            }
+
+            while (backupQueue.Count > 0)
+            {
+                outputQueue.Enqueue(backupQueue.Dequeue());
+            }
+
+            return outputQueue.Dequeue();
+        }
+
+        public int Top()
+        {
+            while (outputQueue.Count > 1)
+            {
+                backupQueue.Enqueue(outputQueue.Dequeue());
+            }
+            int result = outputQueue.Dequeue();
+            while (backupQueue.Count > 0)
+            {
+                outputQueue.Enqueue(backupQueue.Dequeue());
+            }
+            outputQueue.Enqueue(result);
+
+            return result;
+        }
+
+        public bool Empty()
+        {
+            return outputQueue.Count == 0 && backupQueue.Count == 0;
         }
     }
     public static class AlgorithmSolution
@@ -1333,6 +1391,10 @@ namespace AlgorithmCSharp
         // See Class MyQueue
         #endregion
 
+        #region 225. Implement stack using queues
+        // See Class MyStack
+        #endregion
+
         #endregion
     }
     internal class Program
@@ -1567,6 +1629,9 @@ namespace AlgorithmCSharp
             // See Class MyQueue
             #endregion
 
+            #region 225. Implement stack using queues
+            // See Class MyStack
+            #endregion
             #endregion
         }
     }
